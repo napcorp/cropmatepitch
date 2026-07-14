@@ -65,15 +65,16 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
         const targetCookie = `/auto/${lang.code}`;
         const currentCookie = document.cookie.split('; ').find(row => row.startsWith('googtrans='));
         if (lang.code !== 'en' && (!currentCookie || !currentCookie.includes(targetCookie))) {
-          const domain = window.location.hostname;
+          // Remove old cookies first to prevent duplicates
+          document.cookie = "googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+          document.cookie = "googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; domain=" + window.location.hostname + "; path=/;";
+          // Set new cookie
           document.cookie = `googtrans=${targetCookie}; path=/;`;
-          document.cookie = `googtrans=${targetCookie}; domain=${domain}; path=/;`;
           window.location.reload();
         } else if (lang.code === 'en' && currentCookie) {
           
-          const domain = window.location.hostname;
           document.cookie = "googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
-          document.cookie = "googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; domain=" + domain + "; path=/;";
+          document.cookie = "googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; domain=" + window.location.hostname + "; path=/;";
           window.location.reload();
         }
       }
@@ -84,14 +85,13 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
     setCurrentLanguage(lang);
     localStorage.setItem('app_language', lang.code);
 
-    const domain = window.location.hostname;
-    if (lang.code === 'en') {
-      document.cookie = "googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
-      document.cookie = "googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; domain=" + domain + "; path=/;";
-    } else {
-      const targetCookie = `/en/${lang.code}`;
+    // Clear old cookies to prevent duplicates
+    document.cookie = "googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+    document.cookie = "googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; domain=" + window.location.hostname + "; path=/;";
+
+    if (lang.code !== 'en') {
+      const targetCookie = `/auto/${lang.code}`;
       document.cookie = `googtrans=${targetCookie}; path=/;`;
-      document.cookie = `googtrans=${targetCookie}; domain=${domain}; path=/;`;
     }
 
     const gtCombo = document.querySelector('.goog-te-combo') as HTMLSelectElement;

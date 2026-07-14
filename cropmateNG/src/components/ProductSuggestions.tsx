@@ -82,15 +82,19 @@ export default function ProductSuggestions({ products }: ProductSuggestionsProps
                   alt={product.name}
                   className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                   onError={(e) => {
-                    // Fallback to empty icon on load error
-                    (e.target as HTMLElement).style.display = 'none';
+                    const target = e.target as HTMLElement;
+                    target.style.display = 'none';
+                    const fallback = target.nextElementSibling as HTMLElement;
+                    if (fallback) fallback.style.display = 'flex';
                   }}
                 />
-              ) : (
-                <div className="text-slate-300">
-                  <ShoppingCart className="w-8 h-8" />
-                </div>
-              )}
+              ) : null}
+              <div 
+                className="text-slate-300 absolute inset-0 items-center justify-center" 
+                style={{ display: product.imageUrl ? 'none' : 'flex' }}
+              >
+                <ShoppingCart className="w-8 h-8" />
+              </div>
             </div>
             
             <div className="space-y-1">

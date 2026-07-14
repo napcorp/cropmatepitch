@@ -21,29 +21,7 @@ interface WeatherPrediction {
   reasoning: string;
 }
 
-interface StatePath {
-  id: string;
-  name: string;
-  path: string;
-  centerX: number;
-  centerY: number;
-}
-
-const INDIA_OUTLINE_PATH = "M 190 30 L 205 28 L 212 35 L 210 50 L 200 58 L 204 75 L 214 82 L 230 85 L 235 95 L 255 100 L 260 110 L 290 112 L 305 135 L 300 145 L 315 150 L 325 140 L 350 142 L 375 148 L 380 158 L 368 166 L 368 175 L 350 172 L 340 180 L 345 195 L 330 200 L 328 188 L 318 186 L 312 198 L 298 200 L 295 220 L 285 230 L 282 245 L 268 260 L 260 280 L 252 300 L 238 325 L 226 355 L 222 375 L 208 388 L 198 389 L 194 372 L 188 350 L 184 330 L 180 310 L 175 290 L 165 270 L 158 245 L 164 230 L 154 218 L 148 215 L 145 200 L 130 205 L 122 195 L 105 190 L 100 175 L 115 160 L 128 158 L 132 145 L 124 135 L 120 120 L 128 105 L 148 95 L 168 93 L 175 80 Z";
-
-// Detailed India Map Paths
-const INDIA_STATES: StatePath[] = [
-  { id: 'punjab', name: 'Punjab', path: 'M 175 85 C 180 80, 185 80, 190 83 C 193 88, 195 93, 195 97 C 190 100, 185 102, 178 100 C 172 98, 172 90, 175 85 Z', centerX: 185, centerY: 93 },
-  { id: 'haryana', name: 'Haryana', path: 'M 183 101 C 188 99, 193 98, 197 96 C 202 100, 201 108, 203 113 C 196 117, 193 113, 188 112 C 183 110, 180 105, 183 101 Z', centerX: 191, centerY: 106 },
-  { id: 'gujarat', name: 'Gujarat', path: 'M 105 170 C 115 165, 125 160, 135 158 C 145 165, 148 178, 150 188 C 143 192, 146 205, 138 210 C 130 215, 120 208, 125 200 C 123 198, 115 200, 113 193 C 110 190, 103 192, 105 170 Z', centerX: 125, centerY: 185 },
-  { id: 'rajasthan', name: 'Rajasthan', path: 'M 125 120 C 135 110, 150 105, 174 101 C 180 107, 183 118, 186 126 C 180 138, 183 148, 175 155 C 158 158, 142 155, 132 145 C 122 135, 120 125, 125 120 Z', centerX: 153, centerY: 132 },
-  { id: 'madhya-pradesh', name: 'Madhya Pradesh', path: 'M 176 158 C 190 152, 215 150, 235 158 C 248 162, 252 175, 255 188 C 245 195, 235 202, 218 200 C 205 205, 190 200, 180 188 C 172 180, 172 165, 176 158 Z', centerX: 205, centerY: 179 },
-  { id: 'maharashtra', name: 'Maharashtra', path: 'M 152 191 C 165 190, 180 191, 192 201 C 215 203, 235 205, 245 215 C 248 230, 242 255, 230 265 C 210 262, 195 258, 178 255 C 165 250, 160 230, 155 220 C 150 210, 148 200, 152 191 Z', centerX: 195, centerY: 225 },
-  { id: 'west-bengal', name: 'West Bengal', path: 'M 285 170 C 290 162, 298 155, 302 145 C 306 158, 308 175, 305 190 C 298 195, 302 205, 295 215 C 288 218, 285 205, 288 195 C 282 188, 280 180, 285 170 Z', centerX: 295, centerY: 182 },
-  { id: 'assam', name: 'Assam', path: 'M 320 155 C 335 150, 355 148, 370 152 C 375 158, 370 168, 360 172 C 350 170, 345 175, 335 170 C 325 168, 320 162, 320 155 Z', centerX: 345, centerY: 161 },
-  { id: 'tamil-nadu', name: 'Tamil Nadu', path: 'M 193 329 C 205 330, 215 338, 222 350 C 220 365, 215 382, 206 394 C 202 394, 198 385, 197 375 C 192 355, 190 340, 193 329 Z', centerX: 207, centerY: 361 },
-  { id: 'kerala', name: 'Kerala', path: 'M 183 328 C 188 332, 190 345, 194 360 C 197 370, 199 385, 197 395 C 193 395, 192 385, 188 370 C 184 355, 180 340, 183 328 Z', centerX: 188, centerY: 361 },
-];
+import indiaMap from '../indiaMap';
 
 export default function WeatherDiseasesTab() {
   const { t } = useLanguage();
@@ -150,7 +128,7 @@ export default function WeatherDiseasesTab() {
                 <p className="text-xs text-slate-400">{t("Loading Map Data...")}</p>
               </div>
             ) : (
-              <svg viewBox="0 0 400 400" className="w-full max-w-[360px] h-auto drop-shadow-xl">
+              <svg viewBox={indiaMap.viewBox} className="w-full max-w-[420px] h-auto drop-shadow-xl" strokeLinejoin="round" strokeLinecap="round">
                 <defs>
                   <radialGradient id="heatGrad" cx="50%" cy="50%" r="50%">
                     <stop offset="0%" stopColor="rgba(239, 68, 68, 0.3)" />
@@ -161,39 +139,28 @@ export default function WeatherDiseasesTab() {
                 {/* Background Grid */}
                 <rect width="100%" height="100%" fill="#f8fafc" />
 
-                {/* Base Outline of India Map */}
-                <path 
-                  d={INDIA_OUTLINE_PATH} 
-                  className="fill-slate-200/50 stroke-slate-300 stroke-[1.5] transition-all" 
-                />
-
-                {/* Districts */}
-                {INDIA_STATES.map((state) => {
+                {/* States */}
+                {indiaMap.locations.map((state) => {
                   const isSelected = selectedStateId === state.id;
                   const weather = weatherStates.find(s => s.stateId === state.id)?.weather;
                   
                   // Determine color based on weather
-                  let baseColor = 'fill-slate-300/80 stroke-slate-400/40';
+                  let baseColor = 'fill-slate-300/80 stroke-white/80';
                   if (weather) {
-                    if (weather.condition === 'rainy' || weather.condition === 'stormy') baseColor = 'fill-blue-400/30 stroke-blue-500/50';
-                    else if (weather.condition === 'sunny' && weather.temperature > 35) baseColor = 'fill-orange-400/30 stroke-orange-500/50';
-                    else if (weather.condition === 'humid') baseColor = 'fill-emerald-400/25 stroke-emerald-500/50';
+                    if (weather.condition === 'rainy' || weather.condition === 'stormy') baseColor = 'fill-blue-400/80 stroke-blue-200/50';
+                    else if (weather.condition === 'sunny' && weather.temperature > 35) baseColor = 'fill-orange-400/80 stroke-orange-200/50';
+                    else if (weather.condition === 'humid') baseColor = 'fill-emerald-400/80 stroke-emerald-200/50';
+                    else baseColor = 'fill-amber-400/80 stroke-amber-200/50';
                   }
 
                   return (
                     <g key={state.id} className="cursor-pointer group" onClick={() => handleStateClick(state.id)}>
                       <path 
                         d={state.path} 
-                        className={`transition-all duration-300 stroke-[1.5] ${baseColor} ${isSelected ? 'stroke-emerald-600 stroke-[2] fill-emerald-500/40' : 'group-hover:fill-slate-400/60'}`} 
-                      />
-                      <text 
-                        x={state.centerX} 
-                        y={state.centerY}
-                        textAnchor="middle"
-                        className={`text-[8px] font-extrabold pointer-events-none select-none transition-colors ${isSelected ? 'fill-emerald-950 font-black' : 'fill-slate-600 group-hover:fill-slate-800'}`}
+                        className={`transition-all duration-300 stroke-[0.8] ${baseColor} ${isSelected ? 'stroke-emerald-900 stroke-[1.5] fill-emerald-500' : 'group-hover:opacity-80'}`} 
                       >
-                        {state.name}
-                      </text>
+                        <title>{state.name}</title>
+                      </path>
                     </g>
                   );
                 })}

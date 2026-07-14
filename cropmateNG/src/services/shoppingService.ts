@@ -1,10 +1,15 @@
 import type { Product } from './storageService';
 
 export class ShoppingService {
-  private readonly apiKey = import.meta.env.VITE_SERPER_API_KEY || 'c4a433eac3dbab08eee7808320a0a84d7fe2a858';
+  private readonly apiKey = import.meta.env.VITE_SERPER_API_KEY;
   private readonly baseUrl = 'https://google.serper.dev/shopping';
 
   async searchProducts(query: string): Promise<Product[]> {
+    if (!this.apiKey) {
+      console.error('ShoppingService error: VITE_SERPER_API_KEY is not defined');
+      return [];
+    }
+
     try {
       const response = await fetch(this.baseUrl, {
         method: 'POST',
