@@ -37,7 +37,7 @@ function App() {
   };
 
   return (
-    <div className="h-screen text-slate-800 bg-[var(--color-bg-base)] relative overflow-hidden flex flex-col">
+    <div className="h-[100dvh] text-slate-800 bg-[var(--color-bg-base)] relative overflow-hidden flex flex-col w-full">
       {}
       <header className="hidden md:flex items-center justify-between h-16 bg-[#1b7c43] px-8 shrink-0 text-white shadow-[0_4px_20px_rgba(0,0,0,0.25)] border-b border-white/10 relative z-50">
         {}
@@ -122,7 +122,7 @@ function App() {
       </header>
 
       {}
-      <header className="md:hidden flex items-center justify-between p-4 bg-[#1b7c43] relative z-50 shrink-0 shadow-md">
+      <header className="md:hidden flex items-center justify-between p-4 h-[57px] bg-[#1b7c43] relative z-50 shrink-0 shadow-md">
         <div 
           onClick={() => { setActiveTab('home'); setIsMobileMenuOpen(false); }}
           className="flex items-center gap-2 cursor-pointer select-none"
@@ -144,7 +144,7 @@ function App() {
 
       {}
       {isMobileMenuOpen && (
-        <div className="md:hidden absolute top-[57px] left-0 right-0 bottom-0 bg-black/60 backdrop-blur-sm z-40">
+        <div className="md:hidden absolute top-[57px] left-0 right-0 bottom-0 bg-black/60 backdrop-blur-sm z-40 overflow-y-auto">
           <div className="bg-white border-b border-slate-200 shadow-xl p-4 flex flex-col gap-2 animate-in slide-in-from-top-2">
             <MobileDropdownButton 
               active={activeTab === 'home'} 
@@ -225,7 +225,7 @@ function App() {
       )}
 
         {}
-        <main className="flex-1 pt-4 md:pt-8 overflow-hidden max-w-7xl w-full mx-auto relative z-10 flex flex-col">
+        <main className="flex-1 overflow-hidden max-w-7xl w-full mx-auto relative z-10 flex flex-col">
           <div ref={mainRef} className="flex-1 p-4 md:p-8 overflow-y-auto">
             <AnimatePresence mode="wait" custom={direction}>
               <motion.div

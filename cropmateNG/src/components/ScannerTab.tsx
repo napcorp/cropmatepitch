@@ -23,7 +23,10 @@ export default function ScannerTab({ onScanComplete, referenceScan }: { onScanCo
   const [isSearchingProducts, setIsSearchingProducts] = useState(false);
 
   useEffect(() => {
-    
+    if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+      console.warn("Camera API not available. Either not supported or not in a secure context (HTTPS).");
+      return;
+    }
     navigator.mediaDevices.getUserMedia({ video: true })
       .then((stream) => {
         
@@ -52,6 +55,11 @@ export default function ScannerTab({ onScanComplete, referenceScan }: { onScanCo
   const startCamera = async () => {
     setMode('camera');
     setError(null);
+    if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+      setError("Camera API not available. Either not supported or not in a secure context (HTTPS).");
+      setMode('idle');
+      return;
+    }
     try {
       const constraints: MediaStreamConstraints = {
         video: {
@@ -348,7 +356,7 @@ export default function ScannerTab({ onScanComplete, referenceScan }: { onScanCo
                     </div>
                     <div>
                       <h3 className="text-lg font-bold text-slate-800 mb-1">{t("Ready for analysis")}</h3>
-                      <p className="text-xs text-slate-500">{t("Trigger the Gemma AI engine to analyze details regarding crop name, disease vectors, stats, and remediation.")}</p>
+                      <p className="text-xs text-slate-500">{t("Trigger Gemini to analyze details regarding crop name, disease vectors, stats, and remediation.")}</p>
                     </div>
                     <button 
                       onClick={analyzeImage} 

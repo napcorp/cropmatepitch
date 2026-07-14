@@ -10,7 +10,7 @@ const genAI = new GoogleGenerativeAI(apiKey);
 
 
 
-const MODEL_NAME = "gemma-4-31b-it"; 
+const MODEL_NAME = "gemini-3.1-flash"; 
 
 function splitResponse(responseText: string, _contextData: ScanResult[] = []): { text: string; thinking?: string } {
   let thinking = "";

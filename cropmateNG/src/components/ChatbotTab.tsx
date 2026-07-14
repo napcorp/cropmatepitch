@@ -221,7 +221,7 @@ export default function ChatbotTab() {
             <div>
               <h2 className="font-bold text-slate-800 text-sm">{t("Smart Advisor")}</h2>
               <p className="text-[10px] text-emerald-600 font-semibold flex items-center gap-1">
-                <Sparkles className="w-3 h-3" /> Gemma 4 31B IT
+                <Sparkles className="w-3 h-3" /> Gemini 3.1 Flash
               </p>
             </div>
           </div>

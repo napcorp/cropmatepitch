@@ -61,21 +61,35 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
       if (lang) {
         setCurrentLanguage(lang);
         
-        
         const targetCookie = `/auto/${lang.code}`;
         const currentCookie = document.cookie.split('; ').find(row => row.startsWith('googtrans='));
+        const hasReloaded = sessionStorage.getItem('lang_reloaded');
+        
+        const clearCookies = () => {
+          document.cookie = "googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+          document.cookie = "googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; domain=" + window.location.hostname + "; path=/;";
+          document.cookie = "googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; domain=." + window.location.hostname + "; path=/;";
+        };
+
         if (lang.code !== 'en' && (!currentCookie || !currentCookie.includes(targetCookie))) {
-          // Remove old cookies first to prevent duplicates
-          document.cookie = "googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
-          document.cookie = "googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; domain=" + window.location.hostname + "; path=/;";
-          // Set new cookie
-          document.cookie = `googtrans=${targetCookie}; path=/;`;
-          window.location.reload();
+          if (!hasReloaded) {
+            clearCookies();
+            document.cookie = `googtrans=${targetCookie}; path=/;`;
+            sessionStorage.setItem('lang_reloaded', 'true');
+            window.location.reload();
+          } else {
+            sessionStorage.removeItem('lang_reloaded');
+          }
         } else if (lang.code === 'en' && currentCookie) {
-          
-          document.cookie = "googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
-          document.cookie = "googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; domain=" + window.location.hostname + "; path=/;";
-          window.location.reload();
+          if (!hasReloaded) {
+            clearCookies();
+            sessionStorage.setItem('lang_reloaded', 'true');
+            window.location.reload();
+          } else {
+            sessionStorage.removeItem('lang_reloaded');
+          }
+        } else {
+          sessionStorage.removeItem('lang_reloaded');
         }
       }
     }
@@ -85,9 +99,13 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
     setCurrentLanguage(lang);
     localStorage.setItem('app_language', lang.code);
 
-    // Clear old cookies to prevent duplicates
-    document.cookie = "googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
-    document.cookie = "googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; domain=" + window.location.hostname + "; path=/;";
+    const clearCookies = () => {
+      document.cookie = "googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+      document.cookie = "googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; domain=" + window.location.hostname + "; path=/;";
+      document.cookie = "googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; domain=." + window.location.hostname + "; path=/;";
+    };
+
+    clearCookies();
 
     if (lang.code !== 'en') {
       const targetCookie = `/auto/${lang.code}`;
