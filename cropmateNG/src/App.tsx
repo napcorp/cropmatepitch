@@ -39,7 +39,7 @@ function App() {
   return (
     <div className="h-[100dvh] text-slate-800 bg-[var(--color-bg-base)] relative overflow-hidden flex flex-col w-full">
       {}
-      <header className="hidden md:flex items-center justify-between h-16 bg-[#1b7c43] px-8 shrink-0 text-white shadow-[0_4px_20px_rgba(0,0,0,0.25)] border-b border-white/10 relative z-50">
+      <header className="hidden xl:flex items-center justify-between h-16 bg-[#1b7c43] px-4 xl:px-8 shrink-0 text-white shadow-[0_4px_20px_rgba(0,0,0,0.25)] border-b border-white/10 relative z-50">
         {}
         <div 
           onClick={() => setActiveTab('home')}
@@ -122,7 +122,7 @@ function App() {
       </header>
 
       {}
-      <header className="md:hidden flex items-center justify-between p-4 h-[57px] bg-[#1b7c43] relative z-50 shrink-0 shadow-md">
+      <header className="xl:hidden flex items-center justify-between p-4 h-[57px] bg-[#1b7c43] relative z-50 shrink-0 shadow-md">
         <div 
           onClick={() => { setActiveTab('home'); setIsMobileMenuOpen(false); }}
           className="flex items-center gap-2 cursor-pointer select-none"
@@ -144,7 +144,7 @@ function App() {
 
       {}
       {isMobileMenuOpen && (
-        <div className="md:hidden absolute top-[57px] left-0 right-0 bottom-0 bg-black/60 backdrop-blur-sm z-40 overflow-y-auto">
+        <div className="xl:hidden absolute top-[57px] left-0 right-0 bottom-0 bg-black/60 backdrop-blur-sm z-40 overflow-y-auto">
           <div className="bg-white border-b border-slate-200 shadow-xl p-4 flex flex-col gap-2 animate-in slide-in-from-top-2">
             <MobileDropdownButton 
               active={activeTab === 'home'} 
@@ -259,8 +259,8 @@ function NavButton({ active, onClick, label }: { active: boolean, onClick: () =>
   return (
     <button 
       onClick={onClick}
-      className={`relative px-4 py-2 rounded-xl transition-colors duration-200 cursor-pointer text-sm font-semibold select-none z-10 ${
-        active ? 'text-white' : 'text-white hover:text-white'
+      className={`relative px-3 2xl:px-4 py-2 rounded-xl transition-colors duration-200 cursor-pointer text-xs 2xl:text-sm font-semibold select-none z-10 whitespace-nowrap ${
+        active ? 'text-white' : 'text-white/90 hover:text-white'
       }`}
     >
       {active && (
