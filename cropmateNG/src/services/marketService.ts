@@ -23,7 +23,7 @@ const STORAGE_KEY = 'cropmate_market_listings';
 
 export const marketService = {
   getListings: async (): Promise<CropListing[]> => {
-    const data = localStorage.getItem(STORAGE_KEY);
+    const data = sessionStorage.getItem(STORAGE_KEY);
     return data ? JSON.parse(data) : [];
   },
 
@@ -34,14 +34,14 @@ export const marketService = {
       id: crypto.randomUUID(),
       timestamp: Date.now(),
     };
-    localStorage.setItem(STORAGE_KEY, JSON.stringify([...listings, newListing]));
+    sessionStorage.setItem(STORAGE_KEY, JSON.stringify([...listings, newListing]));
     return newListing;
   },
 
   removeListing: async (id: string): Promise<void> => {
     const listings = await marketService.getListings();
     const filtered = listings.filter(l => l.id !== id);
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(filtered));
+    sessionStorage.setItem(STORAGE_KEY, JSON.stringify(filtered));
   },
 
   getMarketTrends: (): MarketTrend[] => {
