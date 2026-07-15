@@ -84,7 +84,7 @@ export default function HomepageTab({ onNavigate }: HomepageTabProps) {
                </div>
                <div>
                  <h4 className="text-xs font-bold text-slate-800 mb-0.5">{t("Fast Insights")}</h4>
-                 <p className="text-[10px] text-slate-500">{t("Powered by the Gemini 3.1 Flash model.")}</p>
+                 <p className="text-[10px] text-slate-500">{t("Powered by the Gemini 3.5 Flash model.")}</p>
                </div>
              </div>
            </div>
